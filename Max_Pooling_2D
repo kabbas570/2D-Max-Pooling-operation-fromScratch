@@ -1,0 +1,26 @@
+#Max_Pooling Layer
+def Pooling_Layer(image):
+    
+    image_h,image_w=np.shape(image)
+    fil_h,fil_w=2,2
+    h=fil_h//2
+    w=fil_w//2
+    param=image_h//2-1
+    After_Pooling=np.zeros([image_h//2,image_w//2])
+    back_pol=np.zeros([image_h,image_w])
+    o=0
+    for i in range(h,image_h-param):
+        l=0
+        for j in range(w,image_w-param):
+            temp1=np.zeros([2,2])
+            for m in range(fil_h):
+                for n in range(fil_w):
+                    temp1[m][n]=image[i-h+m+o][j-w+n+l]
+                    After_Pooling[i-1][j-1]=np.amax(temp1)
+                    a1=np.unravel_index(np.argmax(temp1),temp1.shape)
+                    z1=a1[0]
+                    z2=a1[1]
+            back_pol[i-h+z1+o][j-w+z2+l]=1
+            l=l+1
+        o=o+1
+    return After_Pooling,back_pol
